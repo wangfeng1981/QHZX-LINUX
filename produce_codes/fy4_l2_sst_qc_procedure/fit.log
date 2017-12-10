@@ -1,0 +1,36 @@
+
+
+*******************************************************************************
+Wed Sep 20 19:30:51 2017
+
+
+FIT:    data read from "/root/ncc-fy4-project/qc_output/demo_outputs/FY4A-_AGRI--_N_DISK_1047E_L2-_SST-_MULT_NOM_20170815000000_20170815001459_4000M_V0001.NC.scatter.txt" using 1:2
+        format = x:z
+        #datapoints = 913852
+        residuals are weighted equally (unit weight)
+
+function used for fitting: f(x)
+	f(x)=a*x+b
+fitted parameters initialized with current variable values
+
+iter      chisq       delta/lim  lambda   a             b            
+   0 1.9014071443e+06   0.00e+00  1.80e+01    1.000000e+00   1.000000e+00
+   3 1.6641177709e+06  -2.67e-08  1.80e-02    8.847420e-01   3.818154e+00
+
+After 3 iterations the fit converged.
+final sum of squares of residuals : 1.66412e+06
+rel. change during last iteration : -2.67093e-13
+
+degrees of freedom    (FIT_NDF)                        : 913850
+rms of residuals      (FIT_STDFIT) = sqrt(WSSR/ndf)    : 1.34944
+variance of residuals (reduced chisquare) = WSSR/ndf   : 1.821
+
+Final set of parameters            Asymptotic Standard Error
+=======================            ==========================
+a               = 0.884742         +/- 0.0003227    (0.03648%)
+b               = 3.81815          +/- 0.008221     (0.2153%)
+
+correlation matrix of the fit parameters:
+                a      b      
+a               1.000 
+b              -0.985  1.000 

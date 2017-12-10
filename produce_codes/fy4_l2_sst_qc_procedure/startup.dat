@@ -1,0 +1,11 @@
+#refdatatype
+oisst
+#refdatafiledir
+/root/ncc-fy4-project/reference_product/oisst
+#outputdir
+/root/ncc-fy4-project/qc_output/demo_outputs
+#extrasfilepath
+/root/ncc-fy4-project/extras/extras_params.dat
+#qcbylonlatlut
+/root/ncc-fy4-project/produce_codes/fy4_l2_sst_qc_procedure/qcbylonlatlut
+

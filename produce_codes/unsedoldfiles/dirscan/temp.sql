@@ -1,0 +1,1 @@
+set names utf8;insert into tb_data(product_id,data_filepath) values(1,'/root/ncc-fy4-project/input_product/fy4sst15min/FY4A-_AGRI--_N_DISK_1047E_L2-_SST-_MULT_NOM_20170901060000_20170901061459_4000M_V0001.NC');

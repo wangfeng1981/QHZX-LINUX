@@ -1,0 +1,14 @@
+#host
+localhost
+#user
+htht
+#pwd
+htht123456
+#db
+qhzx_uus
+#indir
+/root/ncc-fy4-project/input_product/fy4sst15min/
+#maxerror
+3
+#logdir
+/root/ncc-fy4-project/extras/logs/

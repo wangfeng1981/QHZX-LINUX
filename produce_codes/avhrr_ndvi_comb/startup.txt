@@ -1,0 +1,10 @@
+#indir
+/QHZX_DATA/input_product/noaa-ndvi/
+#outdir
+/QHZX_DATA/input_product/noaa-avhrr-ndvi-comb/
+#method
+max
+#type
+
+#comb
+/QHZX_DATA/produce_codes/datacombinationfornoaandvi/datacombinationfornoaandvi

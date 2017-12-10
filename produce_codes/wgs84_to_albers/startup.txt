@@ -1,0 +1,12 @@
+#indir
+/QHZX_DATA/input_product/noaa-ndvi-jp/jupingaver/
+#outdir
+/QHZX_DATA/input_product/noaa-ndvi-jp/jupingaver/
+#infixprefix
+avhrr-ndvi-
+#infixtail
+.jpave.tif
+#gdalwarp
+/usr/local/bin/gdalwarp
+#nodata
+-9999

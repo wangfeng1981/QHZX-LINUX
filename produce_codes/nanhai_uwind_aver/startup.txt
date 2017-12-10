@@ -1,0 +1,6 @@
+#indir
+/QHZX_DATA/input_product/ncep-wind/
+#outdir
+/QHZX_DATA/input_product/nanhai-data/
+#outprefix
+nanhai.uwind850aver.

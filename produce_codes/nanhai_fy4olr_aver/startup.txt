@@ -1,0 +1,8 @@
+#olrdir
+/QHZX_DATA/input_product/fy4olr15min/
+#pixellist
+/QHZX_DATA/produce_codes/extras/fy4-1047E-nanhai-region.txt
+#outdir
+/QHZX_DATA/input_product/nanhai-data/
+#outprefix
+nanhai.fy4olraver.

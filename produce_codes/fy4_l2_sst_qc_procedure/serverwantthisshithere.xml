@@ -1,0 +1,32 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<XML identify="productoutput">
+<OutputFiles>
+<OutputFile>
+<InputFilename>FY4A-_AGRI--_N_DISK_1047E_L2-_SST-_MULT_NOM_20170815000000_20170815001459_4000M_V0001.NC</InputFilename>
+<referenceFilename>avhrr-only-v2.20170815.nc</referenceFilename>
+<OutputFilename>/root/ncc-fy4-project/qc_output/demo_outputs/FY4A-_AGRI--_N_DISK_1047E_L2-_SST-_MULT_NOM_20170815000000_20170815001459_4000M_V0001.NC.biasimg.tif</OutputFilename>
+<OutputFilename>/root/ncc-fy4-project/qc_output/demo_outputs/FY4A-_AGRI--_N_DISK_1047E_L2-_SST-_MULT_NOM_20170815000000_20170815001459_4000M_V0001.NC.hist.png</OutputFilename>
+<OutputFilename>/root/ncc-fy4-project/qc_output/demo_outputs/FY4A-_AGRI--_N_DISK_1047E_L2-_SST-_MULT_NOM_20170815000000_20170815001459_4000M_V0001.NC.scatter.png</OutputFilename>
+<OutputFilename>/root/ncc-fy4-project/qc_output/demo_outputs/FY4A-_AGRI--_N_DISK_1047E_L2-_SST-_MULT_NOM_20170815000000_20170815001459_4000M_V0001.NC.heatmap.png</OutputFilename>
+<Deviationstatic bechekVariety="XA" checkVariety = "XB" dataFormat = "XC" dataType = "XD" productDate = "201709200000" productVariety = "XF"  values="{AVBIAS:1.15149,CORR:0.944239,KURT:7.19737,MAX:4.81317,MEDIAN:-0.614475,MIN:-25.8667,RMSE:1.71239,SKEW:-1.90949}"/><OutputFilename>/root/ncc-fy4-project/qc_output/demo_outputs/FY4A-_AGRI--_N_DISK_1047E_L2-_SST-_MULT_NOM_20170815000000_20170815001459_4000M_V0001.NC.matchedpoints.txt</OutputFilename>
+<OutputFilename>/root/ncc-fy4-project/qc_output/demo_outputs/FY4A-_AGRI--_N_DISK_1047E_L2-_SST-_MULT_NOM_20170815000000_20170815001459_4000M_V0001.NC.lonlatbias.txt</OutputFilename>
+<OutputFilename>/root/ncc-fy4-project/qc_output/demo_outputs/FY4A-_AGRI--_N_DISK_1047E_L2-_SST-_MULT_NOM_20170815000000_20170815001459_4000M_V0001.NC.biashist.txt</OutputFilename>
+<OutputFilename>/root/ncc-fy4-project/qc_output/demo_outputs/FY4A-_AGRI--_N_DISK_1047E_L2-_SST-_MULT_NOM_20170815000000_20170815001459_4000M_V0001.NC.scatter.txt</OutputFilename>
+<matched_count>913852</matched_count>
+<input_min_value>-1.7111</input_min_value>
+<input_max_value>34.9661</input_max_value>
+<input_average>25.0945</input_average>
+<ref_min_value>1.29328</ref_min_value>
+<ref_max_value>34.8</ref_max_value>
+<ref_average>26.0203</ref_average>
+<average_bias>-0.92581</average_bias>
+<average_abs_bias>1.15149</average_abs_bias>
+<rmse>1.71239</rmse>
+<corr>0.944239</corr>
+<skew>-1.90949</skew>
+<kurt>7.19737</kurt>
+<bias_median>-0.614475</bias_median>
+<stddev>1.44054</stddev>
+<OutputFile>
+<OutputFiles>
+</XML>

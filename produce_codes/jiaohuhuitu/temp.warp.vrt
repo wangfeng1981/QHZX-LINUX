@@ -1,0 +1,21 @@
+<VRTDataset rasterXSize = "2748" rasterYSize="2748">
+<SRS>GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],TOWGS84[0,0,0,0,0,0,0],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9108"]],AUTHORITY["EPSG","4326"]]</SRS>
+<Metadata domain = "GEOLOCATION">
+<MDI key = "LINE_OFFSET">0</MDI>
+<MDI key = "LINE_STEP">1</MDI>
+<MDI key = "PIXEL_OFFSET">0</MDI>
+<MDI key = "PIXEL_STEP">1</MDI>
+<MDI key = "X_BAND">1</MDI>
+<MDI key = "X_DATASET">temp.lon.vrt</MDI>
+<MDI key = "Y_BAND">1</MDI>
+<MDI key = "Y_DATASET">temp.lat.vrt</MDI>
+</Metadata>
+<VRTRasterBand dataType = "Float32" band="1">
+<NoDataValue>65535</NoDataValue>
+<ComplexSource>
+<SourceFilename relativeToVRT = "0">/QHZX_DATA/tempImages/temp-jiaohuhuitu-20171114180300.png.combine.tif</SourceFilename>
+<SourceBand>1</SourceBand>
+<LUT></LUT>
+</ComplexSource>
+</VRTRasterBand>
+</VRTDataset>

@@ -1,0 +1,16 @@
+#indir
+/QHZX_DATA/input_product/noaa-ndvi-qa-daily/
+#outdir
+/QHZX_DATA/input_product/noaa-ndvi-qa-daily/
+#infixprefix
+noaa-avhrr-ndvi-avh13c1
+#infixtail
+-day.viqa.tif
+#left
+-180
+#resx
+0.05
+#top
+90
+#resy
+-0.05
