@@ -261,7 +261,7 @@ int processOne( vector<string>& selfiles , string dsprefix , string dstail , int
 				return 20;
 			}
 			dstemp->GetRasterBand(1)->RasterIO(GF_Read, 0, y0Index, rasterXSize, useLines,
-				dataBuffer, rasterXSize, bufferLines, GDT_Float64, 0, 0, 0);
+				dataBuffer, rasterXSize, useLines, GDT_Float64, 0, 0, 0);
 			if (method == METHOD_AVER)
 			{//
 				for (int iy = 0; iy < useLines; ++iy)
