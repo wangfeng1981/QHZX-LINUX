@@ -18,6 +18,35 @@ int wft_str2int(std::string ymd)
   return (int)(atof(ymd.c_str()));
 }
 
+//计算两个日期的间隔天数 2017-12-16
+int wft_get_days_between(int ymdsmall, int ymdbig)
+{
+  int day = ymdsmall % 100;
+  int month = (ymdsmall % 10000) / 100;
+  int year = ymdsmall / 10000;
+  struct tm timesmall;
+  memset(&timesmall, 0, sizeof(struct tm));
+  timesmall.tm_mday = day;
+  timesmall.tm_mon = month - 1;
+  timesmall.tm_year = year - 1900;
+
+  int day2 = ymdbig % 100;
+  int month2 = (ymdbig % 10000) / 100;
+  int year2 = ymdbig / 10000;
+  struct tm timebig;
+  memset(&timebig, 0, sizeof(struct tm));
+  timebig.tm_mday = day2;
+  timebig.tm_mon = month2 - 1;
+  timebig.tm_year = year2 - 1900;
+
+  time_t tbig = mktime(&timebig);
+  time_t tsmall = mktime(&timesmall);
+  time_t secs = tbig - tsmall;
+  int days = secs / 3600 / 24;
+  return days + 1;
+}
+
+
 //2017-11-29
 std::string wft_convert_ymd2y_m_d(std::string ymd)
 {
@@ -25,6 +54,21 @@ std::string wft_convert_ymd2y_m_d(std::string ymd)
   std::string mon = ymd.substr(4, 2);
   std::string day = ymd.substr(6, 2);
   return year + "-" + mon + "-" + day;
+}
+
+//2017-12-07
+std::string wft_convert_ymd2y_m_d_hms(std::string ymdhms)
+{
+  std::string year = ymdhms.substr(0, 4);
+  std::string mon = ymdhms.substr(4, 2);
+  std::string day = ymdhms.substr(6, 2);
+  std::string hour = "00" ;
+  std::string minu = "00" ;
+  std::string seco = "00" ;
+  if( ymdhms.length() >= 10 ) hour = ymdhms.substr(8,2) ;
+  if( ymdhms.length() >= 12 ) minu = ymdhms.substr(10,2) ;
+  if( ymdhms.length() >= 12 ) seco = ymdhms.substr(12,2) ;
+  return year + "-" + mon + "-" + day + " " + hour+":"+minu+":" + seco ;
 }
 
 //int to string
@@ -645,6 +689,31 @@ std::vector<std::string> wft_string_split(std::string wholeString, std::string s
       int len1 = pos1 - pos0;
       std::string substr = wholeString.substr(pos0 , len1);
       if (substr.length() > 0) result.push_back(substr);
+      pos0 = pos1 + 1;
+    }
+  }
+  return result;
+}
+
+//ASCII 字符串分割 2017-12-07 保存空字符
+std::vector<std::string> wft_string_split2(std::string wholeString, std::string sep)
+{
+  std::vector<std::string> result;
+
+  int pos0 = 0;
+  while (pos0 < wholeString.length())
+  {
+    int pos1 = wholeString.find(sep,pos0);
+    if (pos1 == std::string::npos)
+    {
+      std::string substr = wholeString.substr(pos0);
+      result.push_back(substr);
+      break;
+    }
+    else {
+      int len1 = pos1 - pos0;
+      std::string substr = wholeString.substr(pos0 , len1);
+      result.push_back(substr);
       pos0 = pos1 + 1;
     }
   }

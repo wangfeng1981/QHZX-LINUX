@@ -102,7 +102,7 @@ int main(int argc, char** argv)
 {
 	cout << "A program to make sst qc 0 product.2017-12-01." << endl;
 	cout << "V1.0  2017-11-29. by wangfeng1@piesat.cn" << endl;
-
+	cout << "V2.0  save into daily directory  2017-12-05. by wangfeng1@piesat.cn" << endl;
 	if (argc == 1)
 	{
 		cout << "sample call:" << endl;
@@ -192,9 +192,14 @@ int main(int argc, char** argv)
 	{
 		string filepath = allfiles[i];
 		string filename = wft_base_name(filepath);
-		string ymd = filename.substr(ymdloc, 14);
-		string outname = outprefix + ymd + outtail;
-		string outpath = outdir + outname;
+		string ymd14 = filename.substr(ymdloc, 14);
+		string ymd8 = filename.substr(ymdloc,8) ;
+		string outname = outprefix + ymd14 + outtail;
+		string outdir1 = outdir + ymd8 + "/" ;
+		mkdir(outdir1.c_str() , 0777) ;
+		
+		string outpath = outdir + ymd8 + "/" + outname;//2017-12-05
+
 		if (wft_test_file_exists(outpath) == false)
 		{
 			cout << "processing " << filename << endl;

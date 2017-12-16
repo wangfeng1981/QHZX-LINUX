@@ -1,0 +1,15 @@
+#product
+noaa-ndvi-max
+#left
+70
+#right
+170
+#top
+60
+#bottom
+-60
+#yyyymmdd0
+20110101
+#yyyymmdd1
+20110201
+

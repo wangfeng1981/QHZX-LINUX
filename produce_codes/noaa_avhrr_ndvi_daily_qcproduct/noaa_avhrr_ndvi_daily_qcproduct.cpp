@@ -33,12 +33,14 @@ bool isGDALAccessable(string filepath)
 
 bool isValidFile(string filepath)
 {
-	GDALDataset* ds = (GDALDataset*)GDALOpen(filepath.c_str(), GA_ReadOnly);
+	string vipath = "NETCDF:\"" + filepath + "\":NDVI";//2017-12-04
+	GDALDataset* ds = (GDALDataset*)GDALOpen(vipath.c_str(), GA_ReadOnly);
 	if (ds == 0)
 	{
 		return false;
 	}
 	else {
+		GDALClose(ds) ;//2017-12-04
 		return true;
 	}
 }
@@ -129,6 +131,7 @@ int main(int argc , char** argv )
 {
 	cout << "A program to make daily noaa avhrr ndvi qc product.2017-11-28." << endl;
 	cout << "V1.0  2017-11-28. by wangfeng1@piesat.cn" << endl;
+	cout << "V2.0  bugfixed for isValidFile 2017-12-04." << endl;
 	
 	if (argc == 1)
 	{

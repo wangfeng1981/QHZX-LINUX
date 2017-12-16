@@ -1,0 +1,15 @@
+#product
+mod13a3-ndvi-max
+#left
+100
+#right
+120
+#top
+40
+#bottom
+20
+#yyyymmdd0
+20170301
+#yyyymmdd1
+20170801
+

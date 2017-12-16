@@ -14,165 +14,142 @@
 #include <cmath>
 #include "../sharedcodes/wftools.h"
 using namespace std; 
+using std::cout ;
 
 
 
-void getFilesUnderDir(string dir, vector<string>& filesVector)
+struct RegionPlot
 {
-	wft_linux_get_dir_files(dir , filesVector ) ;//linux ; for win wft_get_allfiles(dir, filesVector);
-}
+	string code ;
+	string tem ;
+} ;
+
+
 
 //2017-10-26
 
-int str2int(string str)
-{
-	return (int)atof(str.c_str());
-}
 
-struct CutLocLen
-{
-	int loc;
-	int len;
-};
+string g_insert = "/QHZX_DATA/produce_codes/insertdb/insertdb" ;
+string g_host = "localhost" ;
+string g_user = "htht" ;
+string g_pwd = "htht123456" ;
+string g_db = "qhzx_uus" ;
+string g_tb = "tb_product_data" ;
 
-struct StringPair
-{
-	string value1;
-	string value2;
-};
+vector<string> g_pcodeVec ;
+vector<string> g_pidVec ;
+vector<RegionPlot> g_regionPlotVec ;
 
-struct CutRepData
-{
-	int cutid;
-	string findStr;
-	string replaceStr;
-};
 
-void getCutLocLenPairs(string cutstr, vector<CutLocLen>& loclenVec)
+
+
+string getPid( string pname , string regioncode , string ttype )
 {
-	vector<string> s1Vec = wft_string_split(cutstr, ";");
-	for (int i1 = 0; i1 < s1Vec.size(); ++i1)
+	
+	int num= g_pidVec.size() ;
+
+	string pcode1 = pname + regioncode + ttype ;
+	for(int i = 0 ; i<num ; ++ i )
 	{
-		if (s1Vec[i1].length() > 0)
+		if( g_pcodeVec[i] == pcode1 )
 		{
-			vector<string> s2Vec = wft_string_split(s1Vec[i1], ",");
-			if (s2Vec.size() == 2)
-			{
-				CutLocLen ll;
-				ll.loc = str2int(s2Vec[0]);
-				ll.len = str2int(s2Vec[1]);
-				loclenVec.push_back(ll);
-			}
+			return g_pidVec[i] ;
 		}
 	}
+	return "0" ;
 }
 
-void getCutReplaceTriples(string cpStr, vector <CutRepData>& cpVec)
+
+
+int doInsertDb(  string datapath , string thumbpath , string ymdstr , string pid )
 {
-	vector<string> vec1 = wft_string_split(cpStr, ";");
-	for (int i = 0; i < vec1.size(); ++i)
-	{
-		if (vec1[i].length() > 0)
-		{
-			vector<string> vec2 = wft_string_split(vec1[i], ",");
-			if (vec2.size() == 3)
-			{
-				CutRepData crd;
-				crd.cutid = str2int(vec2[0]);
-				crd.findStr = vec2[1];
-				crd.replaceStr = vec2[2];
-				cpVec.push_back(crd);
-			}
-		}
 
-	}
-}
+	string cmd = g_insert 
+		+ " -host "+ g_host 
+		+ " -user "+ g_user 
+		+ " -pwd " + g_pwd 
+		+ " -db " + g_db
+		+ " -tb " + g_tb 
+		+ " -datapath " + datapath 
+		+ " -dtloc -1 "  
+		+ " -dtlen 0 "  
+		+ " -pid " + pid 
+		+ " -thumb " + thumbpath 
+		+ " -startdate \"" + ymdstr + "\"" 
+		+ " -enddate \"" + ymdstr + "\"" ;
 
-vector<string> getAllCutString(string filename, vector<CutLocLen>& cvec, vector<CutRepData>& rvec)
-{
-	vector<string> result;
-	for (int i = 0; i < cvec.size(); ++i)
-	{
-		string s1 = filename.substr(cvec[i].loc, cvec[i].len);
-		if (s1.length() > 0)
-		{
-			for (int j = 0; j < rvec.size(); ++j)
-			{
-				if (rvec[j].cutid == i)
-				{
-					if (s1 == rvec[j].findStr)
-					{
-						s1 = rvec[j].replaceStr;
-						break;
-					}
-				}
-			}
-		}
-		result.push_back(s1);
-	}
-	return result;
+	cout<<cmd<<endl ;
+
+	int ret = system( cmd.c_str() ) ;
+	cout<<"insertdb return code:"<<ret <<endl ;
+	return ret ;
 }
 
 
 
-string replaceStringByCut(string str, vector<string>& cpVec)
-{
-	for (int i = 0; i < cpVec.size(); ++i)
-	{
-		char buff[20];
-		sprintf(buff, "{{{CUT%d}}}", i);
-		string cutv(buff);
-		str = wft_replaceString(str, cutv, cpVec[i]);
-	}
-	return str;
-}
-
-
-int makePlot(string llvfilepath , string pngfilepath ,string plotTem 
+int makePlotAndInsert(string llvfilepath , string pngfilepath ,string plotTem 
 	, string plotProgram 
-	, string title1tem, string title2tem, vector<CutLocLen>& cvec, vector<CutRepData>& rvec)
+	, string datestr, string ttypelong , string ttypeshort 
+	, string pname , string datapath   )
 {
 	if (wft_test_file_exists(llvfilepath) == true )
 	{
-		string filename = wft_base_name(llvfilepath);
-		vector<string> allcutStrVec = getAllCutString(filename, cvec, rvec);
-
-		string title1 = replaceStringByCut(title1tem, allcutStrVec);
-		string title2 = replaceStringByCut(title2tem, allcutStrVec);
+		string ptime = wft_current_datetimestr() ;
 
 		vector<string> vec1;
-		vec1.push_back("{{{TITLE1}}}");
-		vec1.push_back("{{{TITLE2}}}");
+		vec1.push_back("{{{DATE}}}");
+		vec1.push_back("{{{TTYPE}}}");
 		vec1.push_back("{{{INFILE}}}");
 		vec1.push_back("{{{OUTFILE}}}");
+		vec1.push_back("{{{PTIME}}}");
 
 		vector<string> vec2;
-		vec2.push_back(title1);
-		vec2.push_back(title2);
+		vec2.push_back(datestr);
+		vec2.push_back(ttypelong);
 		vec2.push_back(llvfilepath);
 		vec2.push_back(pngfilepath);
+		vec2.push_back(ptime);
 
 		string tempPlotFile = pngfilepath + ".plot";
 		wft_create_file_by_template_with_replacement(tempPlotFile, plotTem, vec1, vec2);
 
 		string cmd = plotProgram + " " + tempPlotFile;
-		cout << "*** call ***" << endl;
 		cout << cmd << endl;
-		cout << "*** *** ***" << endl;
 		int ret = system(cmd.c_str());
-		cout << plotProgram << " return code :" << ret << endl;
+		cout << "gnuplot return code :" << ret << endl;
 
 		if (wft_test_file_exists(pngfilepath))
 		{
+			//insert db 
+			string pid = getPid( pname , "" ,  ttypeshort ) ;
+			int retdb = doInsertDb( datapath , pngfilepath , datestr , pid ) ;
+
+			if( g_regionPlotVec.size() > 0 )
+			{
+				for(int i = 0 ; i<g_regionPlotVec.size() ; ++ i )
+				{
+					RegionPlot rp1 = g_regionPlotVec[i] ;
+					
+					string pid1 = getPid( pname , rp1.code ,  ttypeshort ) ;
+					cout<<"ploting region for "<<rp1.code<<" , pid " << pid1 << endl ;
+
+					string pngfile1 = pngfilepath + "." + rp1.code + ".png" ;
+					string plotfile1 = pngfile1 + ".plot";
+					vec2[3] = pngfile1 ;//bugfixed.2017-12-07.
+					wft_create_file_by_template_with_replacement(plotfile1, rp1.tem , vec1, vec2);
+					string cmd1 = plotProgram + " " + plotfile1;
+					cout << cmd1 << endl;
+					int ret1 = system(cmd1.c_str());
+					cout << "gnuplot return code :" << ret1 << endl;
+
+					if( wft_test_file_exists(pngfile1) )
+					{
+						int retdb1 = doInsertDb( datapath , pngfile1 , datestr , pid1 ) ;
+					}
+				}
+			}
+
 			wft_remove_file(llvfilepath);
-			if (wft_test_file_exists(llvfilepath))
-			{
-				cout << "Warning failed to delete : " << llvfilepath << endl;
-			}
-			else
-			{
-				cout << "Successfully delete : " << llvfilepath << endl;
-			}
 			return 0;
 		}
 		else
@@ -188,71 +165,114 @@ int makePlot(string llvfilepath , string pngfilepath ,string plotTem
 }
 
 
-vector<StringPair> convertStrLineIntoStringPair( string line )
+
+
+
+string getTtypeStrByFilename( string filename  , string& typeshort )
 {
-	vector<StringPair> result  ;
-	vector<string> s1Vec = wft_string_split(line, ";");
-	for (int i1 = 0; i1 < s1Vec.size(); ++i1)
+	int posl2 = filename.find( "_L2-_" ) ;
+	string extname = filename.substr( filename.length()-3 , 3) ;
+
+	if( filename.find(".hou.") != string::npos )
 	{
-		if (s1Vec[i1].length() > 0)
-		{
-			vector<string> s2Vec = wft_string_split(s1Vec[i1], ",");
-			if (s2Vec.size() == 2)
-			{
-				StringPair sp ;
-				sp.value1 = s2Vec[0] ;
-				sp.value2 = s2Vec[1] ;
-				result.push_back(sp);
-			}
-		}
+		typeshort = "hou" ;
+		return "Hourly" ;
 	}
-	return result ;
+	else if( filename.find(".day.") != string::npos )
+	{
+		typeshort = "day" ;
+		return "Daily" ;
+	}else if( filename.find(".fiv.") != string::npos )
+	{
+		typeshort = "fiv" ;
+		return "Five-Days" ;
+	}else if( filename.find(".ten.") != string::npos )
+	{
+		typeshort = "ten" ;
+		return "Ten-Days" ;
+	}else if( filename.find(".mon.") != string::npos )
+	{
+		typeshort = "mon" ;
+		return "Monthly" ;
+	}else if( filename.find(".sea.") != string::npos )
+	{
+		typeshort = "sea" ;
+		return "Seasonly" ;
+	}else if( filename.find(".yea.") != string::npos )
+	{
+		typeshort = "yea" ;
+		return "Yearly" ;
+	}else if( extname == ".NC" && posl2 != string::npos )
+	{//realtime data
+		typeshort = "min" ;
+		return "Near Realtime" ;
+	}
+	typeshort = "" ;
+	return "" ;
 }
 
-int doInsertDb( string program, string host , string usr , string pwd , 
-	string db , string tb , string pid , string datapath , 
-	string dtloc , string dtlen , 
-	string thumbpath  )
+
+void loadRegionPlots( string startup , vector<RegionPlot>& regionPlotVec )
 {
-	if( program != "" )
+	int num = 100 ;
+	for(int i = 0 ; i<100 ; ++ i )
 	{
-		string cmd = program 
-			+ " -host "+ host 
-			+ " -user "+ usr 
-			+ " -pwd " + pwd 
-			+ " -db " + db
-			+ " -tb " + tb 
-			+ " -datapath " + datapath 
-			+ " -dtloc " + dtloc
-			+ " -dtlen " + dtlen 
-			+ " -thumb " + thumbpath 
-			+ " -pid " + pid ;
-		cout<<"*** call *** "<<endl ;
-		cout<<cmd<<endl ;
-		cout<<"*** *** ***" <<endl ;
-		int ret = system( cmd.c_str() ) ;
-		cout<<"insertdb return code:"<<ret <<endl ;
-		return ret ;
-	}else 
-	{
-		return 201 ;
+		string key1 = "#region" + wft_int2str(i) + "-code" ;
+		string key2 = "#region" + wft_int2str(i) + "-plottem" ;
+		string code = wft_getValueFromExtraParamsFile( startup , key1 , false ) ;
+		string tem = wft_getValueFromExtraParamsFile( startup , key2 , false ) ;
+		if( code != "" && tem != "" )
+		{
+			cout<<"region code,tem "<<code<<" , "<<tem <<endl ;
+			RegionPlot rp ;
+			rp.code = code ;
+			rp.tem = tem ;
+			regionPlotVec.push_back(rp) ;
+		}
 	}
 }
 
-string getPidByFilename( string filename, int cutloc , int cutlen  ,vector<StringPair>& vec , string defaultpid )
+
+void loadPcodeAndPid( string configfile , vector<string>& pcodevec, vector<string>& pidvec )
 {
-	if( cutlen == 0 ) return defaultpid ;
-	if( filename.length() <= cutloc + cutlen ) return defaultpid ;
-	string pcode = filename.substr(cutloc , cutlen ) ;
-	for(int i = 0 ; i<vec.size() ; ++ i )
+	std::ifstream infs(configfile.c_str());
+	std::string line;
+	while (std::getline(infs, line))
 	{
-		if(  pcode == vec[i].value1 )
+		if ((int)line[line.length() - 1] == 0 || (int)line[line.length() - 1] == 13)
+        {
+        	line = line.substr(0, line.length() - 1);
+        }
+		if( line.length()==0 )
 		{
-			return vec[i].value2 ;
+
+		}else {
+			if( line[0] =='#' ) continue ;
+			pcodevec.push_back(line) ;
+			cout<<line<< "-" ;
+			std::getline(infs, line) ;
+			if ((int)line[line.length() - 1] == 0 || (int)line[line.length() - 1] == 13)
+	        {
+	        	line = line.substr(0, line.length() - 1);
+	        }
+			pidvec.push_back(line) ;
+			cout<<line<<endl ;
 		}
 	}
-	return defaultpid  ;
 }
+
+
+void checkVecOk( vector<string>& vec , int n , string tag )
+{
+	if( vec.size() == n ){
+		return ;
+	}else {
+		cout<<tag<<" vector size " << vec.size() << " is not equal with "<<n<<endl ;
+		exit(2) ;
+	}
+}
+
+
 
 
 int main(int argc , char** argv )
@@ -264,286 +284,233 @@ int main(int argc , char** argv )
 	cout << "Version 0.3a linux. make llv if no png found, after plot delete llv." << endl;
 	cout << "Version 0.4a linux. call insert db after plot." << endl;
 	cout << "Version 0.4.1a linux. add default pid." << endl;
-
-	if (argc == 1)
+	cout << "Version 1.0a do until all finish. 2017-12-06." << endl;
+	cout << "Version 1.1a add support for NC and Hourly(hou). 2017-12-07." << endl;
+	cout << "Version 1.2a bugfixed for hour and realtime date time put into db. 2017-12-07." << endl;
+	cout << "Version 1.3a add support for multi product in one. 2017-12-07 18:30 ." << endl;
+	if (argc != 3)
 	{
 		cout << "sample call: " << endl;
-		cout << "auto2txtplot params.startup" << endl;
+		cout << "auto2txtplot config.txt params.startup" << endl;
 
-		cout << "sample startupfile:" << endl;
+		cout << "***************** example params.txt ********************" << endl;
 
-		cout << "#indir" << endl;
-		cout << "E:/testdata/fy4sst15min/" << endl;
-		cout << "#filenamefixprefix" << endl;
-		cout << "FY4A-_AGRI--_N_DISK_1047E_L2-_SST-_MULT_NOM_" << endl;
-		cout << "#filenamefixtail" << endl;
-		cout << ".NC;_day.tif;_mon.tif" << endl;
-		cout << "#totxtprogram" << endl;
-		cout << "E:/coding/fy4qhzx-project/extras/fy4totxt.exe" << endl;
+		cout<<"#indir"<<endl;
+		cout<<"/dir1/;/dir2/;/dir3/"<<endl;
+		cout<<"#outdir"<<endl;
+		cout<<"/out1/;/out2/;/out3/"<<endl;
+		cout<<"#inprefix"<<endl;
+		cout<<"prefix1;prefix2;prefix3"<<endl;
+		cout<<"#intail"<<endl;
+		cout<<"tail1;tail2;tail3"<<endl;
+		cout<<"#dsprefix"<<endl;
+		cout<<";;"<<endl;
+		cout<<"#dstail"<<endl;
+		cout<<";;"<<endl;
+		cout<<"#valid0"<<endl;
+		cout<<"0;0;0"<<endl;
+		cout<<"#valid1"<<endl;
+		cout<<"10;10;10"<<endl;
+		cout<<"#scale"<<endl;
+		cout<<"1;1;1"<<endl;
+		cout<<"#offset"<<endl;
+		cout<<"0;0;0"<<endl;
+		cout<<"#totxt"<<endl;
+		cout<<"/QHZX_DATA/produce_codes/fy4totxt/fy4totxt"<<endl;
+		cout<<"#gnuplot"<<endl;
+		cout<<"/usr/local/bin/gnuplot"<<endl;
+		cout<<"#plottem"<<endl;
+		cout<<"plottem1;plottem2;plottem3"<<endl;
+		cout<<"#lltype"<<endl;
+		cout<<"llfiles"<<endl;
+		cout<<"#lonfile"<<endl;
+		cout<<"/QHZX_DATA/extras/fy4lon.tif"<<endl;
+		cout<<"#latfile"<<endl;
+		cout<<"/QHZX_DATA/extras/fy4lat.tif"<<endl;
+		cout<<"#pname"<<endl;
+		cout<<"fy4lpwtpw;fy4lpwlow;fy4lpwmid"<<endl;
+		cout<<"#ymdloc"<<endl;
+		cout<<"25;25;25"<<endl;
+		cout<<"#insert"<<endl;
+		cout<<"/QHZX_DATA/produce_codes/insertdb/insertdb"<<endl;
+		cout<<"#host"<<endl;
+		cout<<"localhost"<<endl;
+		cout<<"#user"<<endl;
+		cout<<"htht"<<endl;
+		cout<<"#pwd"<<endl;
+		cout<<"htht123456"<<endl;
+		cout<<"#db"<<endl;
+		cout<<"qhzx_uus"<<endl;
+		cout<<"#tb"<<endl;
+		cout<<"tb_product_data"<<endl;
+		cout<<""<<endl;
+		cout<<"#### MAX Region Num 100 [OPTIONAL] ###"<<endl;
+		cout<<"#region1-code"<<endl;
+		cout<<"asia"<<endl;
+		cout<<"#region1-plottem"<<endl;
+		cout<<"fy4olr-asia.plot"<<endl;
+		cout<<""<<endl;
 
-		cout << "#dsprefix[optional]" << endl;
-		cout << "HDF5:\"" << endl;
-		cout << "#dstail[optional]" << endl;
-		cout << "\"://SST" << endl;
-
-
-		cout << "#outdir[optional use indir default]" << endl;
-		cout << "E:/testdata/fy4sst15min/" << endl;
-		cout << "#outtail[optional use .llv.tmp default]" << endl;
-		cout << ".llv.tmp" << endl;
-
-		cout << "#type" << endl;
-		cout << "llfiles/llrange" << endl;
-
-		cout << "#lonfile" << endl;
-		cout << "fy4lon.tif" << endl;
-		cout << "#latfile" << endl;
-		cout << "fy4lat.tif" << endl;
-
-		cout << "#left" << endl;
-		cout << "-180" << endl;
-		cout << "#right" << endl;
-		cout << "180" << endl;
-		cout << "#top" << endl;
-		cout << "90" << endl;
-		cout << "#bottom" << endl;
-		cout << "-90" << endl;
-
-		cout << "#valid0[optional]" << endl;
-		cout << "-5" << endl;
-		cout << "#valid1[optional]" << endl;
-		cout << "45" << endl;
-
-		cout << "#scale[optional]" << endl;
-		cout << "1.0" << endl;
-		cout << "#offset[optional]" << endl;
-		cout << "0.0" << endl;
-
-		cout << "#xspace[optional]" << endl;
-		cout << "1" << endl;
-		cout << "#yspace[optional]" << endl;
-		cout << "1" << endl;
-
-		cout << "#x0[optional]" << endl;
-		cout << "0" << endl;
-		cout << "#y0[optional]" << endl;
-		cout << "0" << endl;
-		cout << "#x1[optional]" << endl;
-		cout << "100" << endl;
-		cout << "#y1[optional]" << endl;
-		cout << "50" << endl;
-
-		////////////////////////////////
-		cout << "#plottemplate" << endl;
-		cout << "E:/coding/fy4qhzx-project/extras/fy4sst20171025.plot" << endl;
-		cout << "#plotprogram" << endl;
-		cout << "gnuplot" << endl;
-		cout << "#filenamecut" << endl;
-		cout << "44,8;69,3" << endl;
-		cout << "#cutreplace" << endl;
-		cout << "1,day,Daily;1,ten,Ten-days" << endl;
-		cout << "#title1template" << endl;
-		cout << "FY4A SST {{{CUT0}}} {{{CUT1}}}" << endl;
-		cout << "#title2template" << endl;
-		cout << "4km QC:all" << endl;
-
-		////////////////////////////////
-		cout << "#insertprogram[optional]" << endl;
-		cout << "/root/.../insertdb" << endl;
-		cout << "#host[optional]" << endl;
-		cout << "localhost" << endl;
-		cout << "#user[optional]" << endl;
-		cout << "htht" << endl;
-		cout << "#pwd[optional]" << endl;
-		cout << "htht123456" << endl;
-		cout << "#db[optional]" << endl;
-		cout << "qhzx_uus" << endl;
-		cout << "#tb[optional]" << endl;
-		cout << "tb_data_sst" << endl;
-		cout << "#filenamecutlocforpcode[optional]" << endl;
-		cout << "69" << endl;
-		cout << "#filenamecutlenforpcode[optional]" << endl;
-		cout << "3" << endl;
-		cout << "#pcodepid[optional]" << endl;
-		cout << "day,10;fiv,11;ten,12;mon,13" << endl;
-		cout << "#dbdtloc[optional]" << endl;
-		cout << "69" << endl;
-		cout << "#dbdtlen[optional]" << endl;
-		cout << "8" << endl;
-		cout << "#defaultpid[optional]" << endl;
-		cout << "1" << endl;
 
 		cout << "" << endl; 
 
 		exit(101);
 	}
- 
-	string startupFile(argv[1]); 
+ 	string configfile = argv[1] ;
+ 	loadPcodeAndPid( configfile , g_pcodeVec , g_pidVec ) ;
 
-	string inDir = wft_getValueFromExtraParamsFile(startupFile, "#indir", true);
-	string fixPrefix = wft_getValueFromExtraParamsFile(startupFile, "#filenamefixprefix", true);
-	string fixTailLine = wft_getValueFromExtraParamsFile(startupFile, "#filenamefixtail", true);
-	string toTxtProgram = wft_getValueFromExtraParamsFile(startupFile, "#totxtprogram", true);
-  
-	string dsPrefix = wft_getValueFromExtraParamsFile(startupFile, "#dsprefix", false);
-	string dsTail = wft_getValueFromExtraParamsFile(startupFile, "#dstail", false);
 
-	string outDir = wft_getValueFromExtraParamsFile(startupFile, "#outdir", false);
-	if (outDir == "") outDir = inDir;
-	if (*outDir.rbegin() != '/') outDir = outDir + "/";
-	string outTailName = wft_getValueFromExtraParamsFile(startupFile, "#outtail", false);
-	if (outTailName == "") outTailName = ".llv.tmp";
+	string startupFile(argv[2]); 
+	string templine ;
 
-	string llType = wft_getValueFromExtraParamsFile(startupFile, "#type", true);
-	string lonFile, latFile , left , right , top , bottom ;
-	if (llType == "llfiles")
+	templine = wft_getValueFromExtraParamsFile(startupFile, "#indir", true  ); 
+	vector<string> indirvec = wft_string_split2(templine , ";") ;
+	templine = wft_getValueFromExtraParamsFile(startupFile, "#outdir", true  ); 
+	vector<string> outdirvec = wft_string_split2(templine , ";") ;
+
+	templine = wft_getValueFromExtraParamsFile(startupFile, "#inprefix", true  ); 
+	vector<string> inprefixvec = wft_string_split2(templine , ";") ;
+	templine = wft_getValueFromExtraParamsFile(startupFile, "#intail", true  );
+	vector<string> intailvec = wft_string_split2(templine , ";") ;
+
+
+	templine = wft_getValueFromExtraParamsFile(startupFile, "#dsprefix", true  ); 
+	vector<string> dsprefixvec = wft_string_split2(templine , ";") ;
+	templine = wft_getValueFromExtraParamsFile(startupFile, "#dstail", true  );
+	vector<string> dstailvec = wft_string_split2(templine , ";") ;
+
+	templine = wft_getValueFromExtraParamsFile(startupFile, "#valid0", true  );
+	vector<string> valid0vec = wft_string_split2(templine , ";") ;
+	templine = wft_getValueFromExtraParamsFile(startupFile, "#valid1", true  );
+	vector<string> valid1vec = wft_string_split2(templine , ";") ;
+	templine = wft_getValueFromExtraParamsFile(startupFile, "#scale", true  );
+	vector<string> scalevec = wft_string_split2(templine , ";") ;
+	templine = wft_getValueFromExtraParamsFile(startupFile, "#offset", true  );
+	vector<string> offsetvec = wft_string_split2(templine , ";") ;
+
+	templine = wft_getValueFromExtraParamsFile(startupFile, "#pname", true  );
+	vector<string> pnamevec = wft_string_split2(templine , ";") ;
+	templine = wft_getValueFromExtraParamsFile(startupFile, "#plottem", true  );
+	vector<string> plottemvec = wft_string_split2(templine , ";") ;
+
+	templine = wft_getValueFromExtraParamsFile(startupFile, "#ymdloc"  , true  );
+	vector<string> ymdlocvec =  wft_string_split2(templine , ";") ;
+
+	string gnuplot = wft_getValueFromExtraParamsFile(startupFile, "#gnuplot", true  );
+	string totxt = wft_getValueFromExtraParamsFile(startupFile, "#totxt", true  );
+
+	string llType = wft_getValueFromExtraParamsFile(startupFile, "#lltype", true  );
+	string lonfile = wft_getValueFromExtraParamsFile(startupFile, "#lonfile", true  );
+	string latfile = wft_getValueFromExtraParamsFile(startupFile, "#latfile", true  );
+
+	//db
+	g_insert = wft_getValueFromExtraParamsFile(startupFile, "#insert", true  ); 
+	g_host = wft_getValueFromExtraParamsFile(startupFile, "#host", true  ); 
+	g_user = wft_getValueFromExtraParamsFile(startupFile, "#user", true  ); 
+	g_pwd = wft_getValueFromExtraParamsFile(startupFile, "#pwd", true  ); 
+	g_db = wft_getValueFromExtraParamsFile(startupFile, "#db", true  ); 
+	g_tb = wft_getValueFromExtraParamsFile(startupFile, "#tb", true  ); 
+
+
+	int numOfSets = indirvec.size() ;
+	cout<<"number of sets:"<<numOfSets<<endl ;
+	checkVecOk(outdirvec , numOfSets , "outdirvec") ;
+
+	checkVecOk(inprefixvec , numOfSets, "inprefixvec") ;
+	checkVecOk(intailvec , numOfSets, "intailvec") ;
+
+	checkVecOk(dsprefixvec , numOfSets, "dsprefixvec") ;
+	checkVecOk(dstailvec , numOfSets, "dstailvec") ;
+
+	checkVecOk(valid0vec , numOfSets, "valid0vec") ;
+	checkVecOk(valid1vec , numOfSets, "valid1vec") ;
+	checkVecOk(scalevec , numOfSets, "scalevec") ;
+	checkVecOk(offsetvec , numOfSets, "offsetvec") ;
+
+	checkVecOk(plottemvec , numOfSets, "plottemvec") ;
+	checkVecOk(pnamevec , numOfSets, "pnamevec") ;
+
+	loadRegionPlots( startupFile , g_regionPlotVec ) ;
+
+	for(int iv = 0 ;iv < indirvec.size() ; ++ iv )
 	{
-		lonFile = wft_getValueFromExtraParamsFile(startupFile, "#lonfile", true);
-		latFile = wft_getValueFromExtraParamsFile(startupFile, "#latfile", true);
-	}
-	else if (llType == "llrange")
-	{
-		left = wft_getValueFromExtraParamsFile(startupFile, "#left", true);
-		right = wft_getValueFromExtraParamsFile(startupFile, "#right", true);
-		top = wft_getValueFromExtraParamsFile(startupFile, "#top", true);
-		bottom = wft_getValueFromExtraParamsFile(startupFile, "#bottom", true);
-	}
-	else {
-		cout << "Error(102) : unknown type :"<<llType  << endl;
-		exit(102);
-	}
+		string indir = indirvec[iv] ; 
+		string outdir = outdirvec[iv]  ;
+		string inprefix = inprefixvec[iv] ;
+		string intail = intailvec[iv] ;
+		string dsPrefix = dsprefixvec[iv] ;
+		string dsTail = dstailvec[iv] ;
 
-	string valid0 = wft_getValueFromExtraParamsFile(startupFile, "#valid0", false);
-	string valid1 = wft_getValueFromExtraParamsFile(startupFile, "#valid1", false);
-	string scale = wft_getValueFromExtraParamsFile(startupFile, "#scale", false);
-	string offset = wft_getValueFromExtraParamsFile(startupFile, "#offset", false);
-	string xspace = wft_getValueFromExtraParamsFile(startupFile, "#xspace", false);
-	string yspace = wft_getValueFromExtraParamsFile(startupFile, "#yspace", false);
-	string x0 = wft_getValueFromExtraParamsFile(startupFile, "#x0", false);
-	string x1 = wft_getValueFromExtraParamsFile(startupFile, "#x1", false);
-	string y0 = wft_getValueFromExtraParamsFile(startupFile, "#y0", false);
-	string y1 = wft_getValueFromExtraParamsFile(startupFile, "#y1", false);
+		string valid0str = valid0vec[iv] ;
+		string valid1str = valid1vec[iv] ;
+		string scalestr =  scalevec[iv] ;
+		string offsetstr = offsetvec[iv] ;
 
+		string plottem = plottemvec[iv] ;
+		string pname = pnamevec[iv] ;
 
-	/////////////plot params
-	string plotTemplate = wft_getValueFromExtraParamsFile(startupFile, "#plottemplate", true);
-	string plotProgram = wft_getValueFromExtraParamsFile(startupFile, "#plotprogram", true);
-	string filenameCutStr = wft_getValueFromExtraParamsFile(startupFile, "#filenamecut", true);
-	string cutReplaceStr = wft_getValueFromExtraParamsFile(startupFile, "#cutreplace", true);
-	string title1template = wft_getValueFromExtraParamsFile(startupFile, "#title1template", true);
-	string title2template = wft_getValueFromExtraParamsFile(startupFile, "#title2template", true);
-	vector<CutLocLen> cutLocLenVector;
-	getCutLocLenPairs(filenameCutStr, cutLocLenVector);
-	vector<CutRepData> cutRepVector;
-	getCutReplaceTriples(cutReplaceStr, cutRepVector);
+		int ymdloc = wft_str2int( ymdlocvec[iv] ) ;
 
-
-	////////////// insert db 
-	string insertProgram = wft_getValueFromExtraParamsFile(startupFile, "#insertprogram", false );
-	string dbHost , dbUser , dbPwd , dbDatabase , dbTable , dbCutLocStr ,
-		   dbCutLenStr , dbPcodePidString ,dbDtLoc,dbDtLen , defaultPid ;
-	int dbCutLoc , dbCutLen ;
-	vector<StringPair> pcodeWithPidVector ;
-	if( insertProgram != "" )
-	{
-		dbHost = wft_getValueFromExtraParamsFile(startupFile, "#host", true  );
-
-		dbUser = wft_getValueFromExtraParamsFile(startupFile, "#user", true  );
-		dbPwd = wft_getValueFromExtraParamsFile(startupFile, "#pwd", true  );
-		
-		dbDatabase = wft_getValueFromExtraParamsFile(startupFile, "#db", true  );
-		dbTable = wft_getValueFromExtraParamsFile(startupFile, "#tb", true  );
-
-		dbCutLocStr = wft_getValueFromExtraParamsFile(startupFile, "#filenamecutlocforpcode", true  );
-		dbCutLenStr = wft_getValueFromExtraParamsFile(startupFile, "#filenamecutlenforpcode", true  );
-		dbCutLoc = (int)atof(dbCutLocStr.c_str()) ;
-		dbCutLen = (int)atof(dbCutLenStr.c_str()) ;
-
-		dbDtLoc = wft_getValueFromExtraParamsFile(startupFile, "#dbdtloc", true  );
-		dbDtLen = wft_getValueFromExtraParamsFile(startupFile, "#dbdtlen", true  );
-
-		dbPcodePidString = wft_getValueFromExtraParamsFile(startupFile, "#pcodepid", true  );
-		pcodeWithPidVector = convertStrLineIntoStringPair( dbPcodePidString ) ;
-
-		defaultPid = wft_getValueFromExtraParamsFile(startupFile, "#defaultpid", true  );
-	}
-
-
-	vector<string> allFiles;
-	getFilesUnderDir(inDir, allFiles);
-
-	vector<string> fixTailVec = wft_string_split(fixTailLine, ";");
-
-	for (size_t ifile = 0; ifile < allFiles.size(); ++ifile)
-	{
-		string filename = wft_base_name(allFiles[ifile]);
-		if (filename.find(fixPrefix) != string::npos)
+		vector<string> allFiles;
+		wft_get_allSelectedFiles(indir, inprefix, intail, -1, "", allFiles);
+		int allnum = allFiles.size() ;
+		for (size_t ifile = 0; ifile < allnum ; ++ifile)
 		{
-			bool hasATail = wft_string_has_tails(filename, fixTailVec);
+			string filepath = allFiles[ifile] ;
+			string filename = wft_base_name(filepath) ;
 
-			if (hasATail)
+			string outpngpath = outdir + filename + ".png" ;
+			if (  wft_test_file_exists(outpngpath)  == false )
 			{
-				string outllvfile = outDir + filename + outTailName;//bugfixed 2017-10-20.
-				string outpngfile = outDir + filename + ".png";
-				if (wft_test_file_exists(outpngfile) == false)
+				cout<<"making ("<<ifile<<"/"<<allnum<< ")" <<outpngpath<<endl ;
+				string txtfile = outpngpath + ".tmp" ;
+
+				string dsPath = dsPrefix + filepath + dsTail ;
+				string cmd = totxt + " -in " + dsPath;
+				cmd = cmd + " -out " + txtfile  ;
+				cmd = cmd + " -type " + llType ;
+				cmd = cmd + " -lon " + lonfile;
+				cmd = cmd + " -lat " + latfile;
+
+				cmd = cmd + " -valid0 " + valid0str;
+				cmd = cmd + " -valid1 " + valid1str;
+
+				cmd = cmd + " -scale " + scalestr;
+				cmd = cmd + " -offset " + offsetstr;
+
+				cout << cmd << endl;
+				int ret = system(cmd.c_str());
+				cout << "totxt return code :" << ret << endl;
+
+				if( wft_test_file_exists( txtfile ) )
 				{
-					cout << "find one :"<<filename<<endl ;
-					string dsPath = dsPrefix + allFiles[ifile] + dsTail;
-					string cmd = toTxtProgram + " -in " + dsPath;
-					cmd = cmd + " -out " + outllvfile;
-					cmd = cmd + " -type " + llType;
+					string tsht = "" ;
+					string ttype = getTtypeStrByFilename(filename , tsht ) ;
 
-					if (llType == "llfiles")
+					string ymdstr = "" ;  
+					string ymdstr2 = "" ; 
+					if( tsht == "min" )
 					{
-						cmd = cmd + " -lon " + lonFile;
-						cmd = cmd + " -lat " + latFile;
+						ymdstr =  filename.substr( ymdloc , 14 ) ;
+						ymdstr2 = wft_convert_ymd2y_m_d_hms(ymdstr) ;
+					}else if( tsht == "hou" )
+					{
+						ymdstr =  filename.substr( ymdloc , 10 ) ;
+						ymdstr2 = wft_convert_ymd2y_m_d_hms(ymdstr) ;
+					}else {
+						ymdstr =  filename.substr( ymdloc , 8 ) ;
+						ymdstr2 = wft_convert_ymd2y_m_d(ymdstr) ;
 					}
-					else {
-						cmd = cmd + " -left " + left;
-						cmd = cmd + " -right " + right;
-						cmd = cmd + " -top " + top;
-						cmd = cmd + " -bottom " + bottom;
-					}
-					if (valid0 != "") cmd = cmd + " -valid0 " + valid0;
-					if (valid1 != "") cmd = cmd + " -valid1 " + valid1;
-
-					if (scale != "") cmd = cmd + " -scale " + scale;
-					if (offset != "") cmd = cmd + " -offset " + offset;
-
-					if (xspace != "") cmd = cmd + " -xspace " + xspace;
-					if (yspace != "") cmd = cmd + " -yspace " + yspace;
-
-					if (x0 != "") cmd = cmd + " -x0 " + x0;
-					if (x1 != "") cmd = cmd + " -x1 " + x1;
-					if (y0 != "") cmd = cmd + " -y0 " + y0;
-					if (y1 != "") cmd = cmd + " -y1 " + y1;
-					cout << "*** call ***" << endl;
-					cout << cmd << endl;
-					cout << "*** *** ***" << endl;
-					int ret = system(cmd.c_str());
-					cout << toTxtProgram << " return code :" << ret << endl;
 					
-					if (ret == 0)
-					{
-						int retplot = makePlot(outllvfile, outpngfile, plotTemplate, plotProgram, title1template,
-							title2template, cutLocLenVector, cutRepVector);
-						cout << "makePlot ret code:" << retplot << endl;
-						if (retplot == 0)
-						{
-							string pid = getPidByFilename( filename , dbCutLoc , dbCutLen , pcodeWithPidVector , defaultPid) ;
-							int retdb = doInsertDb( insertProgram , dbHost , dbUser , 
-								dbPwd , dbDatabase , dbTable , pid , allFiles[ifile] , dbDtLoc , dbDtLen , outpngfile ) ;
-							break;
-						}
-						else {
-							cout << "Warning retplot code is not Zero, do next." << endl;
-						}
-					}
-					else {
-						cout << "Warning ret code is not Zero, do next." << endl;
-					}
+					int retplot = makePlotAndInsert(txtfile, outpngpath, plottem, 
+						gnuplot , ymdstr2 , ttype
+						,tsht , pname ,  filepath );
+					
+				}else {
+					cout<<"Error : failed to make "<<txtfile<<endl ;
 				}
 			}
+			cout<<iv<<"/"<<ifile<<"/"<<allnum<<endl ;
 		}
 	}
 

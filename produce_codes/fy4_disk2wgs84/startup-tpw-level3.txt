@@ -1,0 +1,14 @@
+#indir
+/QHZX_DATA/FY4/LPW/level3/
+#outdir
+/QHZX_DATA/FY4/LPW/level3-wgs84/
+#infixprefix
+fy4a_agri_ndisk_1047_l2_lpw_tpw_
+#infixtail
+.tif
+#gdaltranslate
+/usr/local/bin/gdal_translate
+#gdalwarp
+/usr/local/bin/gdalwarp
+#nodata
+65535

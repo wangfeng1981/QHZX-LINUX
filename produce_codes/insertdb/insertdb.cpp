@@ -183,6 +183,8 @@ int main(int argc ,char** argv)
     std::cout<<"version 0.2a . command line params add pid . "<<std::endl ;
     std::cout<<"version 0.3a . input add startdate , enddate. 2017-11-13 . "<<std::endl ;
     std::cout<<"version 1.a . add dtlen condition for startdate , enddate. 2017-11-13 . "<<std::endl ;
+    std::cout<<"version 1.1a check repeat with pid.2017-12-07."<<endl ;
+    std::cout<<"version 2.1a more simple."<<endl ;
     if( argc == 1 )
     {
         cout<<"sample call:"<<endl ;
@@ -233,6 +235,8 @@ int main(int argc ,char** argv)
     wft_has_param(argc , argv , "-db" , dbName , true ) ;
     wft_has_param(argc , argv , "-tb" , tbName , true ) ;
 
+    
+
     string dataFile , thumbFile , dtLocStr , dtLenStr , pidStr  ;
     wft_has_param(argc , argv , "-datapath" , dataFile , true ) ;
     wft_has_param(argc , argv , "-dtloc" , dtLocStr , true ) ;
@@ -267,7 +271,7 @@ int main(int argc ,char** argv)
 
     string filename = wft_base_name(dataFile) ;
     string wherestr = "filename='" ;
-    wherestr += filename + "'" ;
+    wherestr += filename + "' AND product_id=" + pidStr  ;//2017-12-07
     if( wft_mysql_fetch_count(
                             conn , 
                             tbName.c_str() , 

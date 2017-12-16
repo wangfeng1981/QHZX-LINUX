@@ -273,6 +273,8 @@ string makeOutFilePath2(string dir, string prefix, int ymd , int hm , string typ
 }
 
 
+
+
 void getFilesUnderDir(string dir, vector<string>& filesVector)
 {
 	//win wft_get_allfiles(dir, filesVector);
@@ -409,7 +411,7 @@ int main(int argc , char** argv )
 	getFilesUnderDir(inDir, filesVector);
 
 
-int tailLen = fixTail.length();
+	int tailLen = fixTail.length();
 	int maxErrorCount = 5;
 	int errorCount = 0;
 	for (size_t ifile = 0; ifile < filesVector.size(); ++ifile)

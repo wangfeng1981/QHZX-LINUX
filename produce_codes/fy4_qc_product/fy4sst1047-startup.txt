@@ -1,13 +1,13 @@
 #indir
-/QHZX_DATA/input_product/fy4sst15min/
+/QHZX_DATA/FY4/SST/s0-0-origin/
 #outdir
-/QHZX_DATA/input_product/fy4sst-qc-product/
+/QHZX_DATA/FY4/SST/s0-1-dqf0/
 #infixprefix
 FY4A-_AGRI--_N_DISK_1047E_L2-_SST-
 #infixtail
 .NC
 #outprefix
-FY4A-_AGRI--_N_DISK_1047E_L2-_SST-
+fy4a_agri_ndisk_1047_l2_sst_
 #outtail
 _4km_qc0.tif
 #qc0
@@ -27,6 +27,6 @@ HDF5:"
 #qcprefix
 HDF5:"
 #qctail
-"://SST
+"://DQF
 #ymdloc
 44

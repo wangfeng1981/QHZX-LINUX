@@ -1,0 +1,14 @@
+#indir
+/QHZX_DATA/FY4/SST/s0-2-daily/
+#outdir
+/QHZX_DATA/FY4/SST/s0-3-daily-wgs84/
+#infixprefix
+fy4a_agri_ndisk_1047_l2_sst_
+#infixtail
+.ave.day.tif
+#gdaltranslate
+/usr/local/bin/gdal_translate
+#gdalwarp
+/usr/local/bin/gdalwarp
+#nodata
+-888

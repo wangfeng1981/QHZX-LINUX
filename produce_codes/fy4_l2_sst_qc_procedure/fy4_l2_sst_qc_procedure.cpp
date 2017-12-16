@@ -75,6 +75,7 @@ int main(int argc , char** argv )
 	{
 		std::cout << "fy4 L2 15min SST product Quality Control procedure." << std::endl;
 		std::cout << "Version 0.1.1a . by wangfengdev@163.com 2017-9-19." << std::endl;
+		std::cout << "Version 0.2a . export into yearly directory 2017-12-05." << std::endl;
 		std::cout << "Sample call:" << std::endl;
 		std::cout << "\t fy4_l2_sst_qc_procedure FY4Axxxxx.NC startup_params.dat server_provide_xmlpath.xml" << std::endl;
 		std::cout << "Error: no enough parameters. out." << std::endl;

@@ -1,0 +1,4 @@
+#indir
+/QHZX_DATA/FY4/SNC/s0-0-origin/
+#outdir
+/QHZX_DATA/FY4/SNC/fy4sncl2v2/

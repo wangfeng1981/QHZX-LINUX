@@ -1,0 +1,15 @@
+#product
+fy4-olrwind
+#left
+100
+#right
+120
+#top
+10
+#bottom
+-10
+#yyyymmdd0
+20171201
+#yyyymmdd1
+20171202
+

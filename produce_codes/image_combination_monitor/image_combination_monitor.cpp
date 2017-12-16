@@ -260,8 +260,10 @@ int processOne( vector<string>& selfiles , string dsprefix , string dstail , int
 				wft_remove_file(outputValidCountFilepath);
 				return 20;
 			}
+			// dstemp->GetRasterBand(1)->RasterIO(GF_Read, 0, y0Index, rasterXSize, useLines,
+			//	dataBuffer, rasterXSize, bufferLines, GDT_Float64, 0, 0, 0); bug 2017-12-09
 			dstemp->GetRasterBand(1)->RasterIO(GF_Read, 0, y0Index, rasterXSize, useLines,
-				dataBuffer, rasterXSize, useLines, GDT_Float64, 0, 0, 0);
+				dataBuffer, rasterXSize, useLines, GDT_Float64, 0, 0, 0); //bugfixed 2017-12-09 !! useLines replace bufferLines.
 			if (method == METHOD_AVER)
 			{//
 				for (int iy = 0; iy < useLines; ++iy)
@@ -363,7 +365,7 @@ int main(int argc, char** argv)
 	std::cout << "Version 0.1a . by wangfengdev@163.com 2017-11-29." << std::endl;
 	std::cout << "Version 0.1.1a . bugfixed ." << std::endl;
 	std::cout << "Version 0.1.3a . bugfixed write buffer with useLines ." << std::endl;
-	
+	std::cout << "Version 0.2a . bugfixed useLines and bufferlines 2017-12-09 ." << std::endl;
 	if (argc == 1)
 	{
 		std::cout << "*** sample call: ***" << std::endl;

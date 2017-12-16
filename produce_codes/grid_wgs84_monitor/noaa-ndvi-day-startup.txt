@@ -1,9 +1,9 @@
 #indir
-/QHZX_DATA/input_product/noaa-ndvi-qa-daily/
+/QHZX_DATA/input_product/noaa-ndvi/s0-1-qa/
 #outdir
-/QHZX_DATA/input_product/noaa-ndvi-qa-daily/
+/QHZX_DATA/input_product/noaa-ndvi/s0-2-wgs84/
 #infixprefix
-noaa-avhrr-ndvi-avh13c1
+noaa-
 #infixtail
 -day.viqa.tif
 #left
