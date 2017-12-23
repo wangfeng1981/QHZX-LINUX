@@ -95,7 +95,7 @@ bool wft_isValidNoaaNdvi( int ndvi , short qaval)
 {
   if (ndvi >= -2000 && ndvi <= 10000)
   {
-    short mask = 14;//mask out 1,2,3 bit == 1.
+    short mask = 2;//mask out 1,2,3 bit == 1. only get off cloud 2017-12-17 by wyj.
     short maskout = qaval & mask;
     if ( maskout == 0) return true; 
     else return false;

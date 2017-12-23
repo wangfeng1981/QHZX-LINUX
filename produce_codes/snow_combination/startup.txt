@@ -5,7 +5,7 @@
 ###################################
 
 #fy4l2v2dir
-/QHZX_DATA/FY4/SNC/fy4sncl2v2/recent/
+/QHZX_DATA/FY4/SNC/fy4sncl2v2/
 #fy4l2v2daydir
 /QHZX_DATA/FY4/SNC/fy4sncl2v2day/
 #fy4l2v2level3dir
@@ -16,6 +16,17 @@
 14
 
 
+#dofy4
+1
+#dornh
+1
+#doims
+1
+
+#fromymd
+20150101
+#toymd
+20171231
 
 
 
@@ -34,9 +45,19 @@
 #rnhlonloc
 13
 
+#fy4lon
+/QHZX_DATA/extras-imagefiles/fy4lon.tif
+#fy4lat
+/QHZX_DATA/extras-imagefiles/fy4lat.tif
+#fy4lon995
+/QHZX_DATA/extras-imagefiles/fy4lon-0995.tif
+#fy4lat995
+/QHZX_DATA/extras-imagefiles/fy4lat-0995.tif
 
-
-
+#fy3swedir
+/QHZX_DATA/FY3/SWE/
+#stationsnowfile
+/QHZX_DATA/input_product/station-snow/station_snow_2017.txt
 
 
 
@@ -154,14 +175,28 @@
 195
 #pid-fy4-mjzs-mon
 197
+#pid-fy4-mjzs-sea
+198
+#pid-fy4-mjzs-yea
+199
+
 #pid-rnh-mjzs-day
 200
 #pid-rnh-mjzs-mon
 202
+#pid-rnh-mjzs-sea
+203
+#pid-rnh-mjzs-yea
+204
+
 #pid-ims-mjzs-day
 205
 #pid-ims-mjzs-mon
 206
+#pid-ims-mjzs-sea
+211
+#pid-ims-mjzs-yea
+212
 
 
 
@@ -184,9 +219,9 @@ IMS Snow Cover
 #
 #######################################
 #xspace
-1
+4
 #yspace
-1
+4
 
 
 

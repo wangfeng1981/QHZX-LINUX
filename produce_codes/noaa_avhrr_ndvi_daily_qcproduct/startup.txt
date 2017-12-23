@@ -1,4 +1,4 @@
 #indir
-/QHZX_DATA/input_product/noaa-ndvi/s0-0-origin/
+/QHZX_DATA/input_product/noaa-ndvi/s0-0-origin/2017/
 #outdir
-/QHZX_DATA/input_product/noaa-ndvi/s0-1-qa/
+/QHZX_DATA/input_product/noaa-ndvi/s0-1-qa-cloud/2017/

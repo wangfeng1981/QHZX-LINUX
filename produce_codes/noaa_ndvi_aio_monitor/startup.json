@@ -1,0 +1,85 @@
+{
+	"gdalwarp":"/usr/local/bin/gdalwarp",
+	"gdaltranslate":"/usr/local/bin/gdal_translate",
+	"gnuplot":"/usr/local/bin/gnuplot",
+    "totxt":"/QHZX_DATA/produce_codes/image2xyz/image2xyz",
+
+	"wgs84-china-shp":"/QHZX_DATA/extras/shp/cutchina.shp",
+	
+
+	"ndvi-plot-tem":"/QHZX_DATA/produce_codes/noaa_ndvi_aio_monitor/ndvi-sk-tem.plot",
+	"jp-plot-tem":"/QHZX_DATA/produce_codes/noaa_ndvi_aio_monitor/ndvi-jp-tem.plot",
+
+
+    "host":"localhost",
+    "user":"htht",
+    "pwd":"htht123456",
+    "db":"qhzx_uus",
+    "tbimg":"tb_product_data",
+    "tbxl":"tb_xulie_data" ,
+
+
+	"noaa":
+	{
+		"ncdir":"/QHZX_DATA/input_product/noaa-ndvi/s0-0-origin/" ,
+		"l2daydir":"/QHZX_DATA/input_product/noaa-ndvi/aio-l2day/",
+		"l3dir":"/QHZX_DATA/input_product/noaa-ndvi/aio-l3dir/",
+        "pngdir":"/QHZX_DATA/product/noaa/ndvi/" , 
+        
+		"qamask":2,
+        "ncprefix":"AVHRR-Land_",
+        "nctail":".nc" , 
+        "pixelarea":25 ,
+        "xspace":"1",
+        "yspace":"1" , 
+        "fromymd":20150101,
+        "toymd":20171231 ,
+        "cmaxname":"NOAA Maximum NDVI" , 
+        "cavename":"NOAA Average NDVI" ,
+        "jpmaxname":"NOAA Maximum NDVI Anomalies",
+        "jpavename":"NOAA Average NDVI Anomalies",
+        "pidmaxten":63,
+        "pidmaxmon":64,
+        "pidmaxsea":65,
+        "pidmaxyea":66,
+        "pidmaxtenjp":127,
+        "pidmaxmonjp":128,
+        "pidmaxseajp":129,
+        "pidmaxyeajp":130,
+        "pidaveten":67,
+        "pidavemon":68,
+        "pidavesea":69,
+        "pidaveyea":70,
+        "pidavetenjp":120,
+        "pidavemonjp":121,
+        "pidaveseajp":122,
+        "pidaveyeajp":123
+	},
+
+    
+    "qhcdir":[
+        /* max qhc qhc_1981_20100101.max.ten_max_qa1.tif       */
+        "/QHZX_DATA/input_product/noaa-ndvi/noaa-qi-hou-chang/max/tendays/" , 
+        "/QHZX_DATA/input_product/noaa-ndvi/noaa-qi-hou-chang/max/month/" , 
+        "/QHZX_DATA/input_product/noaa-ndvi/noaa-qi-hou-chang/max/season/" , 
+        "/QHZX_DATA/input_product/noaa-ndvi/noaa-qi-hou-chang/max/year/" ,   
+        /* ave qhc avh_nvi_qhc_qa--_1981_20100101_ten.tif     */
+        "/QHZX_DATA/input_product/noaa-ndvi/noaa-qi-hou-chang/aver/qa_avhrr_ndvi_qhc_tendays/" , 
+        "/QHZX_DATA/input_product/noaa-ndvi/noaa-qi-hou-chang/aver/qa_avhrr_ndvi_qhc_monthly/" , 
+        "/QHZX_DATA/input_product/noaa-ndvi/noaa-qi-hou-chang/aver/qa_avhrr_ndvi_qhc_season/" , 
+        "/QHZX_DATA/input_product/noaa-ndvi/noaa-qi-hou-chang/aver/qa_avhrr_ndvi_qhc_year/" 
+    ] , 
+    "qhcymdloc":[
+        /* max qhc */
+        9,
+        9,
+        9,
+        9,
+        /* ave qhc */
+        22,
+        22,
+        22,
+        22
+    ]
+}
+

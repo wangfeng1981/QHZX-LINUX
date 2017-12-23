@@ -249,6 +249,7 @@ int main(int argc , char** argv )
 	cout << "Version 2.0 2017-12-04." << endl;
 	cout << "Version 2.1 . not delete txt file. txt file has extname of tmp . 2017-12-05." << endl;
 	cout << "Version 2.2 . add wind overlay. 2017-12-08." << endl;
+	cout << "Version 2.3 . fix lon lat offset for gldas. add min-width 500px." << endl;
 	if (argc != 3)
 	{
 		cout << "sample call:" << endl;
@@ -469,11 +470,11 @@ int main(int argc , char** argv )
 		{
 			for (int iy = 0; iy < subysize; iy += yspace )
 			{
-				float coory = newtrans[3] + newtrans[5] * (iy+1.5);
+				float coory = newtrans[3] + newtrans[5] * (iy );//fix longlat offset
 				for (int ix = 0; ix < subxsize; ix += xspace )
 				{
 					int it = iy * subxsize + ix;
-					float coorx = newtrans[0] + newtrans[1] * (ix+1.5);
+					float coorx = newtrans[0] + newtrans[1] * (ix );//fix longlat offset
 					if (cntbuff[it] > 0) {
 						sumbuff[it] = sumbuff[it] / cntbuff[it];
 						double val = sumbuff[it] * scale + offset;
@@ -618,6 +619,11 @@ int main(int argc , char** argv )
 	else {
 		outhei = 1000;
 		outwid = subxsize*1.0 / subysize * outhei;
+		if( outwid < 500 )
+		{
+			outwid = 500 ;//min-width 500
+			outhei = subysize*1.0 / subxsize * outwid;//min-width 500
+		}
 	}
 
 	string dt0 = wft_convert_ymdi2y_m_d(ymd0);

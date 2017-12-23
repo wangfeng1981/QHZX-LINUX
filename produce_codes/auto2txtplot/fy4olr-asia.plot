@@ -1,4 +1,5 @@
-#fy4 长波辐射圆盘绘图sst plot 20171206
+#fy4 长波辐射 亚洲 绘图  plot 20171206
+#20171221 修改西边界和东边界范围
 reset
 set terminal png noenhanced size 1200,640 font '/QHZX_DATA/extras/libsans-reg.ttf'
 set output "{{{OUTFILE}}}"
@@ -13,8 +14,8 @@ set border
 unset key 
 set grid
 set colorbox vertical user origin 0.88 , 0.1 size 0.03,0.7
-set xrange[30:180]
-set x2range[30:180]
+set xrange[40:160]
+set x2range[40:160]
 set yrange[-20:60]
 set cbrange[25:400]
 set cbtics ("Land" 25,\
@@ -56,7 +57,7 @@ set palette defined (\
 
 set pm3d interpolate 2,2
 ####################################
-splot '/QHZX_DATA/extras/land_0125half.llv.txt' using 1:2:(1):3 with pm3d ,"{{{INFILE}}}" using 1:2:(1):( ($3<50)*50 + ($3>=50)*$3 ) with pm3d, '/QHZX_DATA/extras/world_110m.txt' u 1:2:(2) with lines lt 1 lc 'grey' , '/QHZX_DATA/extras/china.dat' u 1:2:(1.1) with lines lt 1 lc '#ccbbdd'  
+splot '/QHZX_DATA/extras/land_0125half.llv.txt' using 1:2:(1):3 with pm3d ,"{{{INFILE}}}" using 1:2:(1):( ($3<50)*50 + ($3>=50)*$3 ) with pm3d, '/QHZX_DATA/extras/world_110m.txt' u 1:2:(2) with lines lt 1 lc 'grey' , '/QHZX_DATA/extras/china2.txt' u 1:2:(1.1) with lines lt 1 lc '#ccbbdd'  
 
 
 

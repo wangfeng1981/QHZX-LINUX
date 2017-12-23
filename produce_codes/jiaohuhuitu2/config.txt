@@ -205,7 +205,7 @@ aver
 
 ###############################################
 #
-# 季风 OLR Wind AVER
+# 季风 OLR Wind AVER  这个还用不了！！！
 #
 ###############################################
 #fy4-olrwind-indir
@@ -234,6 +234,138 @@ FY4A OLR (W/m^2) 4Km With NCEP Wind 850hPa
 aver
 #fy4-olrwind-winddir
 /QHZX_DATA/input_product/ncep-wind/
+
+
+
+
+
+
+###############################################
+#
+# FY4 Land Surface Temp 
+#
+###############################################
+#fy4-lst-indir
+/QHZX_DATA/FY4/LST/s0-2-daily-wgs84/
+#fy4-lst-inprefix
+fy4a_agri_ndisk_1047_l2_lst_
+#fy4-lst-intail
+.ave.day.tif.wgs84.tif
+#fy4-lst-valid0
+200
+#fy4-lst-valid1
+500
+#fy4-lst-scale
+1
+#fy4-lst-offset
+0
+#fy4-lst-lltype
+geotrans
+#fy4-lst-ymdloc
+28
+#fy4-lst-plottem
+/QHZX_DATA/produce_codes/jiaohuhuitu2/jhht-lst-tem.plot
+#fy4-lst-displayname
+FY4A LST (K) 4Km AVER COMB.
+#fy4-lst-combtype
+aver
+
+
+
+###############################################
+#
+# GLDAS Land Surface Temp 
+#
+###############################################
+#gldas-lst-indir
+/QHZX_DATA/input_product/gldas/level2/
+#gldas-lst-inprefix
+gldas_lst_
+#gldas-lst-intail
+.day.tif
+#gldas-lst-valid0
+200
+#gldas-lst-valid1
+500
+#gldas-lst-scale
+1
+#gldas-lst-offset
+0
+#gldas-lst-lltype
+geotrans
+#gldas-lst-ymdloc
+10
+#gldas-lst-plottem
+/QHZX_DATA/produce_codes/jiaohuhuitu2/jhht-lst-tem.plot
+#gldas-lst-displayname
+GLDAS LST (K) AVER COMB.
+#gldas-lst-combtype
+aver
+
+
+
+###############################################
+#
+# MODIS Day Land Surface Temp 
+#
+###############################################
+#modisd-lst-indir
+/QHZX_DATA/input_product/MODIS_LST/level2/
+#modisd-lst-inprefix
+modis_lst_
+#modisd-lst-intail
+.dt.day.tif
+#modisd-lst-valid0
+7500
+#modisd-lst-valid1
+65500
+#modisd-lst-scale
+0.02
+#modisd-lst-offset
+0
+#modisd-lst-lltype
+geotrans
+#modisd-lst-ymdloc
+18
+#modisd-lst-plottem
+/QHZX_DATA/produce_codes/jiaohuhuitu2/jhht-lst-tem.plot
+#modisd-lst-displayname
+MODIS Day LST (K) AVER COMB.
+#modisd-lst-combtype
+aver
+
+
+
+
+###############################################
+#
+# MODIS Night Land Surface Temp 
+#
+###############################################
+#modisn-lst-indir
+/QHZX_DATA/input_product/MODIS_LST/level2/
+#modisn-lst-inprefix
+modis_lst_
+#modisn-lst-intail
+.nt.day.tif
+#modisn-lst-valid0
+7500
+#modisn-lst-valid1
+65500
+#modisn-lst-scale
+0.02
+#modisn-lst-offset
+0
+#modisn-lst-lltype
+geotrans
+#modisn-lst-ymdloc
+18
+#modisn-lst-plottem
+/QHZX_DATA/produce_codes/jiaohuhuitu2/jhht-lst-tem.plot
+#modisn-lst-displayname
+MODIS Night LST (K) AVER COMB.
+#modisn-lst-combtype
+aver
 
 
 

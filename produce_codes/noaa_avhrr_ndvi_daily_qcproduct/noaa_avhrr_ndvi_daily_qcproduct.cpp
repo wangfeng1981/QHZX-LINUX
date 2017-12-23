@@ -132,6 +132,7 @@ int main(int argc , char** argv )
 	cout << "A program to make daily noaa avhrr ndvi qc product.2017-11-28." << endl;
 	cout << "V1.0  2017-11-28. by wangfeng1@piesat.cn" << endl;
 	cout << "V2.0  bugfixed for isValidFile 2017-12-04." << endl;
+	cout << "V2.1  get off qa cloud only  2017-12-17." << endl;
 	
 	if (argc == 1)
 	{

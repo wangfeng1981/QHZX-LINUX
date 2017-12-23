@@ -1,0 +1,154 @@
+{
+	"gdalwarp":"/usr/local/bin/gdalwarp",
+	"gdaltranslate":"/usr/local/bin/gdal_translate",
+	"gnuplot":"/usr/local/bin/gnuplot",
+
+	"totxt":"/QHZX_DATA/produce_codes/image2xyz/image2xyz",
+
+    "xspace":"1",
+    "yspace":"1" , 
+    
+    "from_ymd":20170101 ,
+    "to_ymd": 20170930  , 
+
+    "domodis":0 , 
+    "dogldas":1 ,
+    
+    
+    "modishdfdir":"/QHZX_DATA/input_product/MODIS_LST/hdf/",
+    "modisl2dir":"/QHZX_DATA/input_product/MODIS_LST/level2/",
+    "modisl3dir":"/QHZX_DATA/input_product/MODIS_LST/level3/",
+    "modispngdir":"/QHZX_DATA/product/modis/lst/",
+    
+    "modis-pids":[
+        "161","162","163","164" ,//global day,fiv,ten,mon
+        "165","166","167","168" ,//aisa day,fiv,ten,mon
+        "169","170","171","172" //china day,fiv,ten,mon
+    ] , 
+    
+    "modis-regions":[
+       {
+           "code":"glbl" ,
+           "display-name":"MODIS(MOD11C1) Day LST Global" , 
+           "display-name2":"MODIS(MOD11C1) Night LST Global" , 
+           "plot-tem":"/QHZX_DATA/produce_codes/modis_gldas_lst_aio_monitor/lst-glbl-modis.plot" , 
+           "x0":"-180" , 
+           "x1":"180" , 
+           "y0":"-90",
+           "y1":"90" , 
+           "xspace":"7" , 
+           "yspace":"3" , 
+           "valid0":"7500" , 
+           "valid1":"65535" , 
+           "scale":"0.02" , 
+           "offset":"0"
+       } ,
+        {
+           "code":"asia" ,
+           "display-name":"MODIS(MOD11C1) Day LST Asia" , 
+           "display-name2":"MODIS(MOD11C1) Night LST Asia" , 
+           "plot-tem":"/QHZX_DATA/produce_codes/modis_gldas_lst_aio_monitor/lst-asia-modis.plot" , 
+           "x0":"19" , 
+           "x1":"161" , 
+           "y0":"-1",
+           "y1":"71" , 
+           "xspace":"2" , 
+           "yspace":"1" , 
+           "valid0":"7500" , 
+           "valid1":"65535" , 
+           "scale":"0.02" , 
+           "offset":"0"
+       } ,
+        {
+           "code":"chin" ,
+           "display-name":"MODIS(MOD11C1) Day LST China" , 
+           "display-name2":"MODIS(MOD11C1) Night LST China" , 
+           "plot-tem":"/QHZX_DATA/produce_codes/modis_gldas_lst_aio_monitor/lst-chin-modis.plot" , 
+           "x0":"69" , 
+           "x1":"141" , 
+           "y0":"9",
+           "y1":"61" , 
+           "xspace":"1" , 
+           "yspace":"1" , 
+           "valid0":"7500" , 
+           "valid1":"65535" , 
+           "scale":"0.02" , 
+           "offset":"0"
+       } 
+    ] ,
+    
+    
+    
+    "gldasncdir":"/QHZX_DATA/input_product/gldas/nc/" , 
+    "gldasl2dir":"/QHZX_DATA/input_product/gldas/level2/" , 
+    "gldasl3dir":"/QHZX_DATA/input_product/gldas/level3/" , 
+    "gldaspngdir":"/QHZX_DATA/product/gldas/" , 
+    
+    "gldas-pids":[
+        "149","150","151","152" ,//global day,fiv,ten,mon
+        "153","154","155","156" ,//aisa day,fiv,ten,mon
+        "157","158","159","160" //china day,fiv,ten,mon
+    ] , 
+    "gldas-regions":[
+        {
+           "code":"glbl" ,
+           "display-name":"GLDAS(CLM10SUBP_3H) LST Global" , 
+           "display-name2":"" , 
+           "plot-tem":"/QHZX_DATA/produce_codes/modis_gldas_lst_aio_monitor/lst-glbl.plot" , 
+           "x0":"-180" , 
+           "x1":"180" , 
+           "y0":"-90",
+           "y1":"90" , 
+           "xspace":"1" , 
+           "yspace":"1" , 
+           "valid0":"200" , 
+           "valid1":"500" , 
+           "scale":"1" , 
+           "offset":"0"
+       } ,
+        {
+           "code":"asia" ,
+           "display-name":"GLDAS(CLM10SUBP_3H) LST Asia" , 
+           "display-name2":"" , 
+           "plot-tem":"/QHZX_DATA/produce_codes/modis_gldas_lst_aio_monitor/lst-asia.plot" , 
+           "x0":"19" , 
+           "x1":"161" , 
+           "y0":"-1",
+           "y1":"71" , 
+           "xspace":"1" , 
+           "yspace":"1" , 
+           "valid0":"200" , 
+           "valid1":"500" , 
+           "scale":"1" , 
+           "offset":"0"
+       } ,
+        {
+           "code":"chin" ,
+           "display-name":"GLDAS(CLM10SUBP_3H) LST China" , 
+           "display-name2":"" , 
+           "plot-tem":"/QHZX_DATA/produce_codes/modis_gldas_lst_aio_monitor/lst-chin.plot" , 
+           "x0":"69" , 
+           "x1":"141" , 
+           "y0":"9",
+           "y1":"61" , 
+           "xspace":"1" , 
+           "yspace":"1" , 
+           "valid0":"200" , 
+           "valid1":"500" , 
+           "scale":"1" , 
+           "offset":"0"
+       } 
+    ] ,
+    
+    
+
+    "host":"localhost",
+    "user":"htht",
+    "pwd":"htht123456",
+    "db":"qhzx_uus",
+    "tbimg":"tb_product_data",
+    "tbxl":"tb_xulie_data" 
+    
+
+}
+

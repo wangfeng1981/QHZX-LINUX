@@ -35,9 +35,14 @@ public:
 	void insertxl(string tb,string pid,int maskid,
 		double value,int ymd);
 
+	bool hasimg( string pid , int ymd ) ;
+	bool hasxl(string pid , string maskid , int ymd ) ;
+
 	inline ~wDb(){ mysql_close(conn); conn=0; } ;
 
 	string ymd8toy_m_d(string ymd8) ;
+
+	string ymditoy_m_d(int ymdi) ;
 
 private:
 	MYSQL* conn ;
@@ -93,25 +98,7 @@ void wDb::insertimg(string tb,string pid,string fpath,string fname,string thumb,
 
 	string ymdstr = this->ymd8toy_m_d(ymd8str) ;
 
-	bool hasone = false ;
-	{
-		string sql = "SELECT count(*) FROM  " + tb  ;
-		sql += " WHERE " ;
-		sql += " product_id='" + pid + "' " ;
-		sql += " AND start_date='" + ymdstr + "' " ;
-
-		if( mysql_query(conn , sql.c_str() ) )
-		{
-			cout<<"Error : select count query failed."<<endl ;
-		    return ;
-		} 
-		MYSQL_RES * res = mysql_store_result(conn) ;
-		MYSQL_ROW row = mysql_fetch_row(res) ;
-		int count = atof(row[0]) ;
-		mysql_free_result(res) ;
-		res = NULL ;
-		if( count > 0 ) hasone = true ;
-	}
+	bool hasone = this->hasimg( pid , (int)atof(ymd8str.c_str()) ) ;
 	
 	if( hasone == false )
 	{
@@ -175,28 +162,8 @@ void wDb::insertxl(string tb,string pid,string maskid,
 
 	string ymdstr = this->ymd8toy_m_d(ymd8str) ;
 
-	bool hasone = false ;
-	{
-		string sql = "SELECT count(*) FROM  " + tb  ;
-		sql += " WHERE " ;
-		sql += " product_id='" + pid + "' " ;
-		sql += " AND mask='" + maskid + "' " ;
-		sql += " AND value='" + value + "' " ;
-		sql += " AND start_date='" + ymdstr + "' " ;
-
-		if( mysql_query(conn , sql.c_str() ) )
-		{
-			cout<<"Error : select count query failed."<<endl ;
-		    return ;
-		} 
-		MYSQL_RES * res = mysql_store_result(conn) ;
-		MYSQL_ROW row = mysql_fetch_row(res) ;
-		int count = atof(row[0]) ;
-		mysql_free_result(res) ;
-		res = NULL ;
-		if( count > 0 ) hasone = true ;
-	}
-	
+	bool hasone = this->hasxl( pid , maskid , (int)atof(ymd8str.c_str()) ) ;
+		
 	if( hasone == false )
 	{
         string sql = string("insert into ")+tb+" (product_id,mask,value,start_date) values ("  ;
@@ -222,6 +189,69 @@ void wDb::insertxl(string tb,string pid,string maskid,
 		cout<<"Already in db:"
 			<<pid<<","<<maskid<<","<<value<<","<<ymdstr<<endl;
 	}
+}
+
+string wDb::ymditoy_m_d(int ymdi) 
+{
+	int y = ymdi/10000 ;
+	int m = (ymdi%10000)/100 ;
+	int d = ymdi%100 ;
+	char buff[16] ;
+	sprintf(buff , "%04d-%02d-%02d" , y , m , d ) ;
+	return string(buff) ;
+}
+bool wDb::hasimg( string pid , int ymd ) 
+{
+	if( conn == 0 )
+	{
+		cout<<"Error : no connection."<<endl ;
+		return false;
+	}
+	string ymdstr = this->ymditoy_m_d(ymd) ;
+	string sql = "SELECT count(*) FROM  tb_product_data "   ;
+	sql += " WHERE " ;
+	sql += " product_id='" + pid + "' " ;
+	sql += " AND start_date='" + ymdstr + "' " ;
+
+	if( mysql_query(conn , sql.c_str() ) )
+	{
+		cout<<"Error : select count query failed."<<endl ;
+	    return false;
+	} 
+	MYSQL_RES * res = mysql_store_result(conn) ;
+	MYSQL_ROW row = mysql_fetch_row(res) ;
+	int count = atof(row[0]) ;
+	mysql_free_result(res) ;
+	res = NULL ;
+	if( count > 0 ) return true ;
+	else return false ;
+}
+bool wDb::hasxl(string pid , string maskid , int ymd ) 
+{
+	if( conn == 0 )
+	{
+		cout<<"Error : no connection."<<endl ;
+		return false;
+	}
+	string ymdstr = this->ymditoy_m_d(ymd) ;
+	string sql = "SELECT count(*) FROM  tb_xulie_data "   ;
+	sql += " WHERE " ;
+	sql += " product_id='" + pid + "' " ;
+	sql += " AND mask='" + maskid + "' " ;
+	sql += " AND start_date='" + ymdstr + "' " ;
+
+	if( mysql_query(conn , sql.c_str() ) )
+	{
+		cout<<"Error : select count query failed."<<endl ;
+	    return false;
+	} 
+	MYSQL_RES * res = mysql_store_result(conn) ;
+	MYSQL_ROW row = mysql_fetch_row(res) ;
+	int count = atof(row[0]) ;
+	mysql_free_result(res) ;
+	res = NULL ;
+	if( count > 0 ) return true ;
+	else return false ;
 }
 
 
